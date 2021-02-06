@@ -1,0 +1,41 @@
+{
+  "name": "perspective_test",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "latest",
+    "@material-ui/icons": "^4.11.2",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "babel-plugin-transform-remove-console": "^6.9.4",
+    "clsx": "latest",
+    "dotenv": "^8.2.0",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "styled-components": "^5.2.1"
+  },
+  "scripts": {
+    "dev": "nodemon",
+    "build": "npm run pretty && next build && tsc --project tsconfig.server.json && npm run lint",
+    "start": "NODE_ENV=production node dist/index.js",
+    "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest",
+    "lint": "tsc --noEmit && eslint \"**/*.{js,ts,tsx}\" --fix",
+    "pretty": "prettier --write \"{src,types,server,pages}/**/*.{ts,tsx,js}\""
+  },
+  "devDependencies": {
+    "@svgr/webpack": "^5.5.0",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@types/styled-components": "^5.1.7",
+    "@typescript-eslint/eslint-plugin": "^4.12.0",
+    "@typescript-eslint/parser": "^4.12.0",
+    "babel-plugin-styled-components": "^1.12.0",
+    "eslint": "^7.17.0",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.2.1",
+    "ts-node": "^8.10.2",
+    "typescript": "latest",
+    "webpack": "^5.20.2"
+  }
+}
