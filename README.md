@@ -2,10 +2,10 @@
 
 ## How to use
 
-Download [or clone the repo](https://github.com/Mindfultribe/mindfulweb-v2.git):
+Download [or clone the repo](https://github.com/RO5N/perspective_test.git):
 
 ```sh
-curl https://github.com/Mindfultribe/mindfulweb-v2.git/tar.gz/master
+curl https://github.com/RO5N/perspective_test.git
 ```
 
 Install it and run:
