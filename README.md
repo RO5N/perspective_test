@@ -16,6 +16,15 @@ npm run build
 npm run dev
 ```
 
+Prerequisites:
+
+```sh
+mysql database
+node: latest
+create .env from .env.example
+fill the relavent detals
+```
+
 Docker deployment:
 
 ```sh
