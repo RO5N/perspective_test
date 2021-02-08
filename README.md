@@ -16,6 +16,12 @@ npm run build
 npm run dev
 ```
 
+Docker deployment:
+
+```sh
+npm run docker
+```
+
 ## Framework of the project
 
 [Next.js](https://github.com/zeit/next.js) is a framework for server-rendered React apps.

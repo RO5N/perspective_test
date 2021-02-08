@@ -6,6 +6,8 @@ import passport from 'passport';
 import cors from 'cors';
 import ping from './routes/ping';
 import next from 'next';
+import QuestionsRouter from './routes/questionRouter';
+import AnswersRouter from './routes/answerRouter';
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -25,6 +27,8 @@ server.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 
 server.get('/_next/*', (req, res) => handle(req, res));
 // Primary server routes
 server.use('/api/ping', ping);
+server.use('/api/questions', QuestionsRouter);
+server.use('/api/answers', AnswersRouter);
 server.get('/:page/:id?', (req, res) => {
   return handle(req, res);
 });
