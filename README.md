@@ -19,7 +19,7 @@ npm run dev
 Prerequisites:
 
 ```sh
-mysql database
+mysql:5.7.33 database:
 node: latest
 create .env from .env.example
 fill the relavent detals
