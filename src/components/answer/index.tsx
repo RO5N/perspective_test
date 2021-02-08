@@ -1,80 +1,34 @@
 import React from 'react';
-import styled from 'styled-components';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
+import Answer from '@components/answer/Answer';
+import { Button } from '@material-ui/core';
+import styled from 'styled-components';
+import TextField from '@material-ui/core/TextField';
+import { answerSVC } from '@services';
+import validator from 'validator';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
-const Border = styled.div`
-  width: 1179px;
-  height: 270px;
+const Rectangle = styled.div`
+  width: 740px;
+  height: 155px;
   background: #ffffff;
   border: 1px solid #e5e5e5;
   box-sizing: border-box;
-  border-radius: 5px;
+  border-radius: 4px;
 `;
 
-const Title = styled.h1`
-  font-family: 'Roboto';
+const Title = styled.h2`
+  font-family: 'Nunito';
   font-style: normal;
-  font-weight: 500;
-  font-size: 26px;
-  line-height: 30px;
-  color: #113264;
-`;
-
-const Description = styled.p`
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 19px;
-  color: #343a40;
-`;
-
-const Status = styled.div`
-  width: 218.33px;
-  height: 14.46px;
-  background: #e9ecef;
-  border-radius: 3px;
-`;
-
-const StatusEnabledLeft = styled.div`
-  width: 110px;
-  height: 14.46px;
-  background: #a920cb;
-  border-radius: 3px 0px 0px 3px;
-`;
-
-const StatusDissabledLeft = styled.div`
-  width: 110px;
-  height: 14.46px;
-  background: #e9ecef;
-  border-radius: 3px 0px 0px 3px;
-`;
-
-const StatusEnabledRight = styled.div`
-  width: 110px;
-  height: 14.46px;
-  background: #a920cb;
-  border-radius: 0px 3px 3px 0px;
-`;
-
-const StatusDissabledRight = styled.div`
-  width: 110px;
-  height: 14.46px;
-  background: #e9ecef;
-  border-radius: 0px 3px 3px 0px;
-`;
-
-const StatusText = styled.p`
-  width: 145.56px;
-  height: 18.32px;
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 146.16%;
-  /* or 20px */
-
-  color: #878787;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 25px;
+  text-align: center;
+  color: #495057;
 `;
 
 const useStyles = makeStyles(() =>
@@ -84,119 +38,139 @@ const useStyles = makeStyles(() =>
       justifyContent: 'center',
     },
 
-    border: {
+    emailSubmitWrapper: {
       display: 'flex',
-      flexDirection: 'row',
-      //justifyContent: 'center',
-      alignItems: 'center',
-    },
-
-    content: {
-      display: 'flex',
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-
-    sectionLeft: {
-      display: 'flex',
-      flex: 2,
       flexDirection: 'column',
       justifyContent: 'center',
-      alignItems: 'flex-start',
-      marginLeft: 43,
-    },
-
-    sectionRight: {
-      display: 'flex',
-      flex: 2,
-      flexDirection: 'column',
-      justifyContent: 'flex-end',
       alignItems: 'center',
-      marginRight: 43,
     },
 
-    status: {
+    answerWrapper: {
       display: 'flex',
       flexDirection: 'row',
+      justifyContent: 'center',
     },
 
-    statusTextLeft: {
-      marginRight: 18,
+    emailTextField: {
+      width: 570,
+      height: 48,
     },
 
-    statusTextRight: {
-      marginLeft: 18,
+    submitButtonWrapper: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center',
+    },
+
+    submitButton: {
+      width: 155,
+      height: 36,
+      backgroundColor: '#3d59fa',
+      color: '#ffffff',
+      '&:hover': {
+        backgroundColor: '#2a3eaf',
+      },
+      marginTop: 64,
     },
   }),
 );
 
-interface progressBarProps {
-  enable: string;
-}
-
-function ProgressBar({ enable }: progressBarProps): JSX.Element {
-  const classes = useStyles();
-
-  if (enable === 'right') {
-    return (
-      <Status className={classes.status}>
-        <StatusDissabledLeft />
-        <StatusEnabledRight />
-      </Status>
-    );
-  } else if (enable === 'left') {
-    return (
-      <Status className={classes.status}>
-        <StatusEnabledLeft />
-        <StatusDissabledRight />
-      </Status>
-    );
-  }
-
-  return <Status></Status>;
-}
-
 export default function Index(): JSX.Element {
   const classes = useStyles();
+  const [email, setEmail] = React.useState('');
+  const [results, setResults] = React.useState<string[] | undefined>(undefined);
+  const [error, setError] = React.useState('');
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleChangeText = (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (prop === 'email') {
+      setEmail(event.target.value);
+    }
+  };
 
   return (
     <div className={classes.root}>
-      <Border className={classes.border}>
-        <div className={classes.content}>
-          <div className={classes.sectionLeft}>
-            <Title>Your Perspective</Title>
-            <Description>Your Perspective Type is ENTJ</Description>
-          </div>
-
-          <div className={classes.sectionRight}>
-            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-              <StatusText className={classes.statusTextLeft}>Introversion (I)</StatusText>
-              <ProgressBar enable={'left'}></ProgressBar>
-              <StatusText className={classes.statusTextRight}>Extraversion (E)</StatusText>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-              <StatusText className={classes.statusTextLeft}>Sensing (S)</StatusText>
-              <ProgressBar enable={'left'}></ProgressBar>
-              <StatusText className={classes.statusTextRight}>Intuition (N)</StatusText>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-              <StatusText className={classes.statusTextLeft}>Thinking (T)</StatusText>
-              <ProgressBar enable={'right'}></ProgressBar>
-              <StatusText className={classes.statusTextRight}>Feeling (F)</StatusText>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-              <StatusText className={classes.statusTextLeft}>Judging (J)</StatusText>
-              <ProgressBar enable={'left'}></ProgressBar>
-              <StatusText className={classes.statusTextRight}>Perceiving (P)</StatusText>
-            </div>
+      {results ? (
+        <div>
+          <Answer result={results} />
+          <div className={classes.submitButtonWrapper}>
+            <Button
+              className={classes.submitButton}
+              onClick={() => {
+                window.location.reload();
+              }}
+            >
+              {'Check another'}
+            </Button>
           </div>
         </div>
-      </Border>
+      ) : (
+        <div>
+          <Rectangle>
+            <div className={classes.emailSubmitWrapper}>
+              <Title>Your Email</Title>
+              <div className={classes.answerWrapper}>
+                <TextField
+                  id="outlined-basic"
+                  placeholder="you@example.com"
+                  variant="outlined"
+                  className={classes.emailTextField}
+                  value={email}
+                  onChange={handleChangeText('email')}
+                />
+              </div>
+            </div>
+          </Rectangle>
+          <div className={classes.submitButtonWrapper}>
+            <Button
+              className={classes.submitButton}
+              onClick={() => {
+                if (validator.isEmail(email)) {
+                  answerSVC
+                    .getAnswersByEmail(email)
+                    .then((res) => {
+                      console.log('res.data: ', res.data.data);
+                      setResults(res.data.data);
+                    })
+                    .catch((error) => {
+                      setError(error);
+                      handleClickOpen();
+                    });
+                } else {
+                  setError('Invalid email');
+                  handleClickOpen();
+                }
+              }}
+            >
+              {'Check result'}
+            </Button>
+          </div>
+        </div>
+      )}
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{'Warning!'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">{error}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Continue
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

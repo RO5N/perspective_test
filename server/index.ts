@@ -1,26 +1,18 @@
-import { createServer } from 'http';
-import { parse } from 'url';
-import next from 'next';
+import server from './server';
+import errorHandler from 'errorhandler';
+import { NextFunction } from 'express';
+import { logger } from './util/logger';
 
-const port = parseInt(process.env.PORT || '3001', 10);
-const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dev });
-const handle = app.getRequestHandler();
+if (process.env.NODE_ENV != 'production') server.use(errorHandler()); // Error Handler. Provides full stack
 
-app.prepare().then(() => {
-  createServer((req, res) => {
-    const parsedUrl = parse(req.url!, true);
-    const { pathname, query } = parsedUrl;
+server.use((err: Error, req: any, _res: any, next: NextFunction) => {
+  // Winston logger
+  logger.error(`${req.method} ${req.originalUrl}: `, err);
+  next();
+});
 
-    if (pathname === '/a') {
-      app.render(req, res, '/a', query);
-    } else if (pathname === '/b') {
-      app.render(req, res, '/b', query);
-    } else {
-      handle(req, res, parsedUrl);
-    }
-  }).listen(port);
-
-  // tslint:disable-next-line:no-console
-  console.log(`> Server listening at http://localhost:${port} as ${dev ? 'development' : process.env.NODE_ENV}`);
+export default server.listen(server.get('port'), () => {
+  // Start Express server
+  console.log('  server is running at http://localhost:%d in %s mode', server.get('port'), server.get('env'));
+  console.log('  Press CTRL-C to stop\n');
 });

@@ -5,6 +5,7 @@
 
 # misc
 .DS_Store
+.env
 .env.local
 .env.development.local
 .env.test.local
@@ -18,3 +19,4 @@ yarn-error.log*
 /.next
 dist
 package-lock.json
+debug.log

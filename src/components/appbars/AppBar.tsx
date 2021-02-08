@@ -4,7 +4,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Router from 'next/router';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -14,9 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
     menuButton: {
       marginRight: theme.spacing(2),
     },
-    title: {
-      //flexGrow: 1,
-    },
+    title: {},
 
     button: {
       marginLeft: 20,
@@ -38,7 +35,7 @@ export default function ButtonAppBar(): JSX.Element {
             color="inherit"
             className={classes.button}
             onClick={() => {
-              Router.push('/').then(() => window.scrollTo(0, 0));
+              window.location.pathname = '/';
             }}
           >
             Test
@@ -47,7 +44,7 @@ export default function ButtonAppBar(): JSX.Element {
             color="inherit"
             className={classes.button}
             onClick={() => {
-              Router.push('/result').then(() => window.scrollTo(0, 0));
+              window.location.pathname = '/result';
             }}
           >
             Results
