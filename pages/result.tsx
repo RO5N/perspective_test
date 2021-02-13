@@ -4,7 +4,7 @@ import Answer from '@components/answer';
 
 const Index = (): JSX.Element => {
   return (
-    <Layout title="Temp" description="This is a temp page">
+    <Layout title="Results" description="Find out your perspective results">
       <Answer />
     </Layout>
   );
